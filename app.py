@@ -353,7 +353,7 @@ st.markdown(custom_css, unsafe_allow_html=True)
 # --- Cabecera principal ---
 st.title("🍎🍏🍊 Clasificador de Frutas Multiclase 🍐🍋🍓")
 st.markdown("### _Una herramienta inteligente para identificar y clasificar diferentes tipos de frutas._")
-st.write("\n")
+st.write("\\n")
 
 # --- Barra lateral de Información ---
 st.sidebar.header("Acerca de esta Aplicación")
@@ -363,9 +363,9 @@ st.sidebar.markdown(
     "**Manzana (Apple), Plátano (Banana), Naranja (Orange) y Pera (Pear)**."
 )
 st.sidebar.markdown(
-    "\n\n**Guía de Uso:**\n"
-    "1. Sube una imagen clara de una fruta usando la sección de 'Carga de Imagen'.\n"
-    "2. La aplicación procesará la imagen y mostrará la predicción del modelo con su nivel de confianza.\n"
+    "\\n\\n**Guía de Uso:**\\n"
+    "1. Sube una imagen clara de una fruta usando la sección de 'Carga de Imagen'.\\n"
+    "2. La aplicación procesará la imagen y mostrará la predicción del modelo con su nivel de confianza.\\n"
 )
 st.sidebar.info(
     "Desarrollado con ❤️ y PyTorch. "
@@ -393,7 +393,7 @@ if uploaded_file is not None:
     with col_img:
         st.subheader("Imagen Seleccionada")
         st.image(image, caption='Imagen de tu fruta', use_column_width=True)
-        st.markdown("\n")
+        st.markdown("\\n")
 
     input_tensor = transforme_inferencia(image)
     input_batch = input_tensor.unsqueeze(0)
@@ -415,7 +415,7 @@ if uploaded_file is not None:
         st.write(f"📊 Nivel de Confianza: **{confidence:.2f}%**")
         st.balloons()
 
-        st.markdown("\n--- ")
+        st.markdown("\\n--- ")
         st.subheader("Detalle de Probabilidades:")
 
         prob_data_list = []
