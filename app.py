@@ -29,8 +29,8 @@ def load_model():
             st.error(f"Error al descargar el modelo de Google Drive: {e}. Asegúrate de que el ID sea correcto y el archivo esté público.")
             st.stop() # Detiene la aplicación si no se puede descargar el modelo
 
-    # Cargar la estructura de ResNet18
-    model = models.resnet18(weights=None) # No necesitamos los pesos pre-entrenados de ImageNet aquí
+    # Cargar la estructura de ResNet18 con pesos pre-entrenados ImageNet, como se hizo en el entrenamiento
+    model = models.resnet18(weights=models.ResNet18_Weights.DEFAULT) # <--- CAMBIO AQUÍ
 
     # Congelar las capas base (aunque no entrenaremos, es buena práctica mantener la misma estructura)
     for param in model.parameters():
@@ -194,7 +194,8 @@ def load_model():
         except Exception as e:
             st.error(f"Error al descargar el modelo de Google Drive: {{e}}. Asegúrate de que el ID sea correcto y el archivo esté público.")
             st.stop()
-    model = models.resnet18(weights=None)
+    # Cargar la estructura de ResNet18 con pesos pre-entrenados ImageNet, como se hizo en el entrenamiento
+    model = models.resnet18(weights=models.ResNet18_Weights.DEFAULT) # <--- CAMBIO AQUÍ
     for param in model.parameters():
         param.requires_grad = False
     num_caracteristicas = model.fc.in_features
@@ -283,7 +284,7 @@ custom_css = """
     }
     .stButton>button:hover {
         background-color: #5b8440;
-        color: white;;
+        color: white;
     }
 
     .stSuccess {
