@@ -308,12 +308,6 @@ if uploaded_file is not None:
                "como una fuente definitiva para decisiones críticas.*")
 """
 
-# Guardar el código de la aplicación Streamlit en un archivo temporal.
-# Esto es necesario para que `streamlit run` pueda ejecutarlo.
-output_dir = "/mount/src/fruit"
-os.makedirs(output_dir, exist_ok=True)
-app_file_path = os.path.join(output_dir, "app.py")
-
 with open(app_file_path, "w") as f:
     f.write(app_code)
 
