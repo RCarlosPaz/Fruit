@@ -164,7 +164,7 @@ output_dir = "/mount/src/fruit"
 os.makedirs(output_dir, exist_ok=True)
 app_file_path = os.path.join(output_dir, "app.py")
 
-app_code = """
+app_code = '''
 import streamlit as st
 import torch
 import torch.nn as nn
@@ -341,7 +341,7 @@ custom_css = """
         font-style: italic;
         margin-top: 20px;
     }
-    
+
     .stSuccess p {
         font-size: 1.2em;
         font-weight: bold;
@@ -427,7 +427,7 @@ if uploaded_file is not None:
     st.caption("💡 *Nota Importante: La precisión de este modelo puede variar. "
                "Utiliza esta herramienta como un apoyo para la clasificación de frutas y no "
                "como una fuente definitiva para decisiones críticas.*")
-"""
+'''
 
 with open(app_file_path, "w") as f:
     f.write(app_code)
