@@ -78,20 +78,17 @@ st.set_page_config(
 # --- Inyección de CSS personalizado para un tema más armonioso y robusto ---
 st.markdown("""
 <style>
-    /* Variables de diseño inspiradas en frutas */
     :root {
-        --primary-fruit-color: #6a994e; /* Verde manzana/hoja */
-        --background-light: #f0f2f6; /* Fondo gris claro */
-        --secondary-bg-pastel: #d4e09b; /* Verde pastel suave */
-        --text-dark: #2b2b2b; /* Texto oscuro */
-        --font-family-primary: 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif; /* Tipografía moderna */
+        --primary-fruit-color: #6a994e;
+        --background-light: #f0f2f6;
+        --secondary-bg-pastel: #d4e09b;
+        --text-dark: #2b2b2b;
+        --font-family-primary: 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
     }
 
-    /* Estilos generales */
     body { font-family: var(--font-family-primary); color: var(--text-dark); }
 
-    /* Títulos principales */
-    h1 { 
+    h1 {
         color: var(--primary-fruit-color);
         text-align: center;
         padding-bottom: 25px;
@@ -102,7 +99,6 @@ st.markdown("""
     h2 { color: var(--primary-fruit-color); font-size: 2em; margin-top: 25px; margin-bottom: 15px;}
     h3 { color: var(--text-dark); font-size: 1.5em; margin-top: 20px; margin-bottom: 10px;}
 
-    /* Contenedor principal */
     .main .block-container {
         padding-top: 30px;
         padding-right: 30px;
@@ -113,8 +109,7 @@ st.markdown("""
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
     }
 
-    /* Barra lateral */
-    .css-1d391kg { /* Selecciona el contenedor de la barra lateral */
+    .css-1d391kg {
         background-color: var(--secondary-bg-pastel);
         color: var(--text-dark);
         border-right: 2px solid var(--primary-fruit-color);
@@ -122,9 +117,8 @@ st.markdown("""
         padding-left: 15px;
         padding-right: 15px;
     }
-    .css-pkz34x { color: var(--text-dark); } /* Texto dentro de la sidebar */
+    .css-pkz34x { color: var(--text-dark); }
 
-    /* Botones */
     .stButton>button {
         background-color: var(--primary-fruit-color);
         color: white;
@@ -137,24 +131,23 @@ st.markdown("""
         transition: background-color 0.3s ease;
     }
     .stButton>button:hover {
-        background-color: #5b8440; /* Verde más oscuro al pasar el ratón */
+        background-color: #5b8440;
         color: white;
     }
 
-    /* Mensajes de estado (éxito, info, error) */
     .stSuccess {
-        background-color: #e6ffe6; /* Verde muy claro */
-        color: #006400; /* Verde oscuro */
+        background-color: #e6ffe6;
+        color: #006400;
         border-radius: 8px;
         padding: 15px;
         margin-top: 15px;
-        border-left: 6px solid var(--primary-fruit-color); /* Borde verde fuerte */
+        border-left: 6px solid var(--primary-fruit-color);
         font-size: 1.1em;
         font-weight: 500;
     }
     .stInfo {
-        background-color: #e0f2f7; /* Azul claro */
-        color: #007bff; /* Azul vibrante */
+        background-color: #e0f2f7;
+        color: #007bff;
         border-radius: 8px;
         padding: 15px;
         margin-top: 15px;
@@ -162,8 +155,8 @@ st.markdown("""
         font-size: 1em;
     }
     .stError {
-        background-color: #ffe6e6; /* Rojo muy claro */
-        color: #dc3545; /* Rojo vibrante */
+        background-color: #ffe6e6;
+        color: #dc3545;
         border-radius: 8px;
         padding: 15px;
         margin-top: 15px;
@@ -172,15 +165,13 @@ st.markdown("""
         font-weight: 500;
     }
 
-    /* Texto general y etiquetas */
     .stMarkdown, .stText, .stLabel {
         color: var(--text-dark);
         font-family: var(--font-family-primary);
         line-height: 1.6;
     }
 
-    /* Componente de carga de archivos */
-    .css-fg4pbf { /* Clase específica para el file_uploader */
+    .css-fg4pbf {
         background-color: var(--background-light);
         border: 2px dashed var(--primary-fruit-color);
         color: var(--primary-fruit-color);
@@ -191,10 +182,9 @@ st.markdown("""
         margin-top: 20px;
     }
     .css-fg4pbf:hover {
-        background-color: #c0cc94; /* Ligeramente más oscuro en hover */
+        background-color: #c0cc94;
     }
 
-    /* Ajustes para el texto de subtítulos */
     .stCaption {
         font-size: 0.9em;
         color: #666;
@@ -202,7 +192,6 @@ st.markdown("""
         margin-top: 20px;
     }
     
-    /* Estilos para el texto de predicción */
     .stSuccess p {
         font-size: 1.2em;
         font-weight: bold;
@@ -301,7 +290,7 @@ if uploaded_file is not None:
 # Crear el directorio si no existe (para guardar app.py)
 output_dir = "/mount/src/fruit"
 os.makedirs(output_dir, exist_ok=True)
-output_path = os.path.join(output_dir, "app.py")
+app_file_path = os.path.join(output_dir, "app.py")
 
 # Guardar el contenido de la aplicación Streamlit en un archivo
 # Esto es necesario para que `streamlit run` pueda ejecutarlo.
