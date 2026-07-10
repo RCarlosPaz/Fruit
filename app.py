@@ -164,6 +164,7 @@ output_dir = "/mount/src/fruit"
 os.makedirs(output_dir, exist_ok=True)
 app_file_path = os.path.join(output_dir, "app.py")
 
+# Modificado para incluir el CSS personalizado
 app_code = '''
 import streamlit as st
 import torch
@@ -186,12 +187,12 @@ MODEL_PATH = 'resnet18_multiclase.pth'
 @st.cache_resource(show_spinner="Cargando modelo y pesos...")
 def load_model():
     if not os.path.exists(MODEL_PATH):
-        st.info(f\"Descargando el modelo '{MODEL_PATH}' de Google Drive. Esto puede tomar un momento...\")
+        st.info(f"Descargando el modelo '{MODEL_PATH}' de Google Drive. Esto puede tomar un momento...")
         try:
             gdown.download(id=GOOGLE_DRIVE_FILE_ID, output=MODEL_PATH, quiet=False)
-            st.success(\"¡Modelo descargado exitosamente!\")
+            st.success("¡Modelo descargado exitosamente!")
         except Exception as e:
-            st.error(f\"Error al descargar el modelo de Google Drive: {{e}}. Asegúrate de que el ID sea correcto y el archivo esté público.\")
+            st.error(f"Error al descargar el modelo de Google Drive: {{e}}. Asegúrate de que el ID sea correcto y el archivo esté público.")
             st.stop()
     model = models.resnet18(weights=None)
     for param in model.parameters():
@@ -201,7 +202,7 @@ def load_model():
     try:
         model.load_state_dict(torch.load(MODEL_PATH, map_location=device))
     except FileNotFoundError:
-        st.error(f\"Error: El archivo del modelo '{MODEL_PATH}' no se encontró después de la descarga o la ruta es incorrecta.\")
+        st.error(f"Error: El archivo del modelo '{MODEL_PATH}' no se encontró después de la descarga o la ruta es incorrecta.")
         st.stop()
     model.eval()
     model = model.to(device)
@@ -282,7 +283,7 @@ custom_css = """
     }
     .stButton>button:hover {
         background-color: #5b8440;
-        color: white;
+        color: white;;
     }
 
     .stSuccess {
