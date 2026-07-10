@@ -63,9 +63,9 @@ transforme_inferencia = transforms.Compose([
 clases = ['Apple', 'Banana', 'Orange', 'Pear'] # Asegúrate de que esto coincida con train_dataset.classes
 
 # --- Interfaz de Streamlit ---
-st.set_page_config(page_title="Clasificador Multiclase de Frutas", page_icon="🍏")
+st.set_page_config(page_title="Clasificador de Frutas", page_icon="🍏")
 
-st.title("🍎 Clasificador Multiclase de Frutas")
+st.title("🍎 Clasificador de Frutas")
 st.markdown("Una aplicación para clasificar imágenes de frutas usando un modelo ResNet18 pre-entrenado.")
 
 # Barra lateral
