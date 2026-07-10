@@ -7,10 +7,6 @@ from PIL import Image
 import io
 import os
 import gdown
-import subprocess
-import threading
-import time
-from pyngrok import ngrok
 
 # --- Configuración del dispositivo (CPU para Streamlit Cloud si no hay GPU) ---
 device = torch.device('cpu') # En Streamlit Cloud, es más probable que uses CPU
@@ -161,7 +157,7 @@ if uploaded_file is not None:
                "Utiliza esta herramienta como un apoyo para la clasificación de frutas y no "
                "como una fuente definitiva para decisiones críticas.*")
 
-# --- Ejecución del Streamlit App en Colab con Ngrok ---
+# --- Guardar el contenido de la aplicación Streamlit en un archivo ---
 
 # Crear el directorio si no existe (para guardar app.py)
 output_dir = "/mount/src/fruit"
@@ -322,24 +318,3 @@ with open(app_file_path, "w") as f:
     f.write(app_code)
 
 print(f"Archivo '{app_file_path}' creado exitosamente.")
-
-# --- Configurar y ejecutar Ngrok y Streamlit ---
-# Se recomienda obtener un token de autenticación de ngrok desde su sitio web (ngrok.com)
-# para evitar limitaciones y usar características avanzadas.
-# ngrok.set_auth_token("YOUR_NGROK_AUTH_TOKEN") # Reemplaza con tu token si lo tienes
-
-public_url = ngrok.connect(port=8501)
-print(f"\nTu aplicación Streamlit está accesible en: {public_url}\n")
-
-def run_streamlit():
-    time.sleep(2) # Pequeño retardo para asegurar que el puerto esté listo
-    env = os.environ.copy()
-    env["NPM_CONFIG_UPDATE_NOTIFIER"] = "false" # Suprimir notificaciones de NPM
-    # Ejecuta Streamlit usando el archivo guardado
-    subprocess.run(["python", "-m", "streamlit", "run", app_file_path, "--server.port", "8501", "--server.headless", "true"], env=env)
-
-streamlit_thread = threading.Thread(target=run_streamlit)
-streamlit_thread.start()
-
-print("Ejecutando la aplicación Streamlit en segundo plano...")
-print("Para detener la aplicación, simplemente detén la ejecución de esta celda.")
