@@ -164,7 +164,68 @@ output_dir = "/mount/src/fruit"
 os.makedirs(output_dir, exist_ok=True)
 app_file_path = os.path.join(output_dir, "app.py")
 
-# CSS personalizado para la interfaz de Streamlit
+app_code = """
+import streamlit as st
+import torch
+import torch.nn as nn
+import torchvision.transforms as transforms
+import torchvision.models as models
+from PIL import Image
+import io
+import os
+import gdown
+
+# --- Configuración del dispositivo (CPU para Streamlit Cloud si no hay GPU) ---
+device = torch.device('cpu')
+
+# --- ID del archivo de Google Drive para el modelo --- ¡IMPORTANTE! MODIFICA ESTO
+GOOGLE_DRIVE_FILE_ID = '1Zvz1qtI0nPyMZSpL_Hywc6bJe7RaqRDr'
+MODEL_PATH = 'resnet18_multiclase.pth'
+
+# --- Definición de la arquitectura del modelo (DEBE SER LA MISMA QUE SE ENTRENÓ) ---
+@st.cache_resource(show_spinner="Cargando modelo y pesos...")
+def load_model():
+    if not os.path.exists(MODEL_PATH):
+        st.info(f\"Descargando el modelo '{MODEL_PATH}' de Google Drive. Esto puede tomar un momento...\")
+        try:
+            gdown.download(id=GOOGLE_DRIVE_FILE_ID, output=MODEL_PATH, quiet=False)
+            st.success(\"¡Modelo descargado exitosamente!\")
+        except Exception as e:
+            st.error(f\"Error al descargar el modelo de Google Drive: {{e}}. Asegúrate de que el ID sea correcto y el archivo esté público.\")
+            st.stop()
+    model = models.resnet18(weights=None)
+    for param in model.parameters():
+        param.requires_grad = False
+    num_caracteristicas = model.fc.in_features
+    model.fc = nn.Linear(num_caracteristicas, 4)
+    try:
+        model.load_state_dict(torch.load(MODEL_PATH, map_location=device))
+    except FileNotFoundError:
+        st.error(f\"Error: El archivo del modelo '{MODEL_PATH}' no se encontró después de la descarga o la ruta es incorrecta.\")
+        st.stop()
+    model.eval()
+    model = model.to(device)
+    return model
+
+# --- Transformaciones para una sola imagen de inferencia ---
+transforme_inferencia = transforms.Compose([
+    transforms.Resize((224, 224)),
+    transforms.ToTensor(),
+    transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
+])
+
+# --- Mapeo de clases (DEBE COINCIDIR CON EL ORDEN DE ENTRENAMIENTO) ---
+clases = ['Apple', 'Banana', 'Orange', 'Pear']
+
+# --- Configuración y diseño de la interfaz de Streamlit ---
+st.set_page_config(
+    page_title="Clasificador Multiclase de Frutas",
+    page_icon="🍏",
+    layout="wide",
+    initial_sidebar_state="expanded"
+)
+
+# --- CSS personalizado para la interfaz de Streamlit ---
 custom_css = """
 <style>
     :root {
@@ -287,70 +348,7 @@ custom_css = """
     }
 </style>
 """
-
-app_code = f"""
-import streamlit as st
-import torch
-import torch.nn as nn
-import torchvision.transforms as transforms
-import torchvision.models as models
-from PIL import Image
-import io
-import os
-import gdown
-
-# --- Configuración del dispositivo (CPU para Streamlit Cloud si no hay GPU) ---
-device = torch.device('cpu')
-
-# --- ID del archivo de Google Drive para el modelo --- ¡IMPORTANTE! MODIFICA ESTO
-GOOGLE_DRIVE_FILE_ID = '1Zvz1qtI0nPyMZSpL_Hywc6bJe7RaqRDr'
-MODEL_PATH = 'resnet18_multiclase.pth'
-
-# --- Definición de la arquitectura del modelo (DEBE SER LA MISMA QUE SE ENTRENÓ) ---
-@st.cache_resource(show_spinner="Cargando modelo y pesos...")
-def load_model():
-    if not os.path.exists(MODEL_PATH):
-        st.info(f\"Descargando el modelo '{MODEL_PATH}' de Google Drive. Esto puede tomar un momento...\")
-        try:
-            gdown.download(id=GOOGLE_DRIVE_FILE_ID, output=MODEL_PATH, quiet=False)
-            st.success(\"¡Modelo descargado exitosamente!\")
-        except Exception as e:
-            st.error(f\"Error al descargar el modelo de Google Drive: {{e}}. Asegúrate de que el ID sea correcto y el archivo esté público.\")
-            st.stop()
-    model = models.resnet18(weights=None)
-    for param in model.parameters():
-        param.requires_grad = False
-    num_caracteristicas = model.fc.in_features
-    model.fc = nn.Linear(num_caracteristicas, 4)
-    try:
-        model.load_state_dict(torch.load(MODEL_PATH, map_location=device))
-    except FileNotFoundError:
-        st.error(f\"Error: El archivo del modelo '{MODEL_PATH}' no se encontró después de la descarga o la ruta es incorrecta.\")
-        st.stop()
-    model.eval()
-    model = model.to(device)
-    return model
-
-# --- Transformaciones para una sola imagen de inferencia ---
-transforme_inferencia = transforms.Compose([
-    transforms.Resize((224, 224)),
-    transforms.ToTensor(),
-    transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
-])
-
-# --- Mapeo de clases (DEBE COINCIDIR CON EL ORDEN DE ENTRENAMIENTO) ---
-clases = ['Apple', 'Banana', 'Orange', 'Pear']
-
-# --- Configuración y diseño de la interfaz de Streamlit ---
-st.set_page_config(
-    page_title="Clasificador Multiclase de Frutas",
-    page_icon="🍏",
-    layout="wide",
-    initial_sidebar_state="expanded"
-)
-
-# --- Inyección de CSS personalizado para un tema más armonioso y robusto ---
-st.markdown("""{custom_css}""", unsafe_allow_html=True)
+st.markdown(custom_css, unsafe_allow_html=True)
 
 # --- Cabecera principal ---
 st.title("🍎🍏🍊 Clasificador de Frutas Multiclase 🍐🍋🍓")
